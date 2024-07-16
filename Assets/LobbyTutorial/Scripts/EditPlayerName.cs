@@ -17,7 +17,7 @@ public class EditPlayerName : MonoBehaviour {
     [SerializeField] private TextMeshProUGUI playerNameText;
 
 
-    private string playerName = "Code Monkey";
+    private string playerName = "Player";
 
 
     private void Awake() {
@@ -42,14 +42,23 @@ public class EditPlayerName : MonoBehaviour {
 
     private void Start() {
         OnNameChanged += EditPlayerName_OnNameChanged;
+        LobbyManager.Instance.OnGameStarted += EditPlayerName_OnGameStarted;
     }
 
     private void EditPlayerName_OnNameChanged(object sender, EventArgs e) {
         LobbyManager.Instance.UpdatePlayerName(GetPlayerName());
     }
+    private void EditPlayerName_OnGameStarted(object sender, EventArgs e)
+    {
+        Hide();
+    }
 
     public string GetPlayerName() {
         return playerName;
+    }
+    
+    private void Hide() {
+        gameObject.SetActive(false);
     }
 
 

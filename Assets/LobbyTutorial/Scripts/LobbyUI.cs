@@ -50,6 +50,7 @@ public class LobbyUI : MonoBehaviour {
         startGameButton.onClick.AddListener(() => {
             LobbyManager.Instance.StartGame();
         });
+        
     }
 
     private void Start() {
@@ -58,12 +59,16 @@ public class LobbyUI : MonoBehaviour {
         LobbyManager.Instance.OnLobbyGameModeChanged += UpdateLobby_Event;
         LobbyManager.Instance.OnLeftLobby += LobbyManager_OnLeftLobby;
         LobbyManager.Instance.OnKickedFromLobby += LobbyManager_OnLeftLobby;
+        LobbyManager.Instance.OnGameStarted += LobbyManager_OnGameStarted;
 
         Hide();
     }
 
     private void LobbyManager_OnLeftLobby(object sender, System.EventArgs e) {
         ClearLobby();
+        Hide();
+    }
+    private void LobbyManager_OnGameStarted(object sender, System.EventArgs e) {
         Hide();
     }
 
@@ -73,6 +78,11 @@ public class LobbyUI : MonoBehaviour {
 
     private void UpdateLobby() {
         UpdateLobby(LobbyManager.Instance.GetJoinedLobby());
+    }
+
+    private void HideStartButtonForClients()
+    {
+        startGameButton.gameObject.SetActive(LobbyManager.Instance.IsLobbyHost());
     }
 
     private void UpdateLobby(Lobby lobby) {
@@ -87,6 +97,8 @@ public class LobbyUI : MonoBehaviour {
                 LobbyManager.Instance.IsLobbyHost() &&
                 player.Id != AuthenticationService.Instance.PlayerId // Don't allow kick self
             );
+            
+            HideStartButtonForClients();
 
             lobbyPlayerSingleUI.UpdatePlayer(player);
         }
