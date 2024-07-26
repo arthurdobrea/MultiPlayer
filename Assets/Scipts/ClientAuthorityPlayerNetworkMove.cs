@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerNetworkMove : NetworkBehaviour
+public class ClientAuthorityPlayerNetworkMove : NetworkBehaviour
 {
     public float moveSpeed = 5f;
     public float jumpForce = 10f;
